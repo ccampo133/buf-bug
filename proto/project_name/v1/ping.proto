@@ -31,7 +31,7 @@ message PingRequest {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "PingRequest"
-      description: "Ping is a simple liveness check."
+      description: "Ping is a liveness check."
     }
   };
 }
