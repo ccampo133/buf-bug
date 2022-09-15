@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package project_name.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// These annotations are used when generating the OpenAPI file.
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    version: "1.0";
+  };
+  schemes: HTTP;
+};
+// Ping is a simple liveliness check. A response without error should be
+// considered successful.
+service PingService {
+  rpc Ping(PingRequest) returns (PingResponse) {
+    option (google.api.http) = {
+      get: "/v1/ping"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Perform a liveliness check to see if the service is alive.";
+      tags: ["internal"];
+    };
+  }
+}
+
+message PingRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "PingRequest"
+      description: "Ping is a simple liveness check."
+    }
+  };
+}
+
+
+message PingResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "PingResponse"
+    }
+  };
+  // When this timestamp is returned via an HTTP API, its format is:
+  // 2020-11-09T23:05:07.311908Z (ISO 8601)
+  google.protobuf.Timestamp server_time_utc = 1;
+}
+

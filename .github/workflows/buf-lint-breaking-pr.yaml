@@ -1,0 +1,17 @@
+on: pull_request
+
+jobs:
+  validate-and-lint-protos:
+    runs-on: ubuntu-latest
+    name: Validate and Lint Protobufs
+    steps:
+      - uses: actions/checkout@v2
+      # Install the `buf` CLI
+      - uses: bufbuild/buf-setup-action@v1
+      # Lint Protobuf sources
+      - uses: bufbuild/buf-lint-action@v1
+      # Run Protobuf breaking change detection against the `main` branch
+      - uses: bufbuild/buf-breaking-action@v1
+        if: always() # Run this even if lint fails
+        with:
+          against: "https://github.com/${{ github.repository }}.git#branch=main"
